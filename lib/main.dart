@@ -1,4 +1,4 @@
-import 'package:assignment_ecommerce_app_ismail/screens/signup_screen.dart';
+import 'package:assignment_ecommerce_app_ismail/screens/initial_screens/signup_screen.dart';
 import 'package:flutter/material.dart';
 
 void main() {
@@ -8,12 +8,12 @@ void main() {
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
 
-  // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
       title: 'Flutter Demo',
       theme: ThemeData(
+        scaffoldBackgroundColor: const Color(0xff1E1F28),
         textTheme: const TextTheme(
           headlineLarge: TextStyle(
               fontSize: 34,
@@ -53,8 +53,8 @@ class MyApp extends StatelessWidget {
             onError: Color(0xffFF2424),
             background: Color(0xff1E1F28),
             onBackground: Color(0xffF6F6F6),
-            surface: Color(0xff2A2C36),
-            onSurface: Color(0xffF6F6F6)),
+            surface: Color(0xffFFBA49),
+            onSurface: Color(0xffABB4BD)),
       ),
       home: const SignUpScreen(),
     );

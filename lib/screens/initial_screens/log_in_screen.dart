@@ -1,6 +1,6 @@
-import 'package:assignment_ecommerce_app_ismail/screens/visual_finding_screen.dart';
 import 'package:flutter/material.dart';
 
+import '../main_view.dart';
 import 'forgot_screen.dart';
 
 class LogInScreen extends StatefulWidget {
@@ -74,8 +74,9 @@ class _LogInScreenState extends State<LogInScreen> {
                     Navigator.push(
                         context,
                         MaterialPageRoute(
-                          builder: (context) => VisualFindingScreen(),
-                        ));
+                            builder: (context) => const MainViewScreen()
+                            // VisualFindingScreen(),
+                            ));
                   },
                   style: ElevatedButton.styleFrom(
                       fixedSize: const Size(343, 48),

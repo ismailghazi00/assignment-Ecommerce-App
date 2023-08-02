@@ -1,6 +1,6 @@
 import 'dart:io';
 
-import 'package:assignment_ecommerce_app_ismail/screens/visual_finding_screen.dart';
+import 'package:assignment_ecommerce_app_ismail/screens/initial_screens/visual_finding_screen.dart';
 import 'package:flutter/material.dart';
 
 class VisualFindingSplashScreen extends StatefulWidget {

@@ -1,7 +1,9 @@
 import 'dart:io';
-import 'package:assignment_ecommerce_app_ismail/screens/vfinding_splash_screen.dart';
+import 'package:assignment_ecommerce_app_ismail/screens/initial_screens/vfinding_splash_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
+
+import '../main_view.dart';
 
 class VisualFindingScreen extends StatefulWidget {
   const VisualFindingScreen({super.key});
@@ -14,6 +16,14 @@ File? imagePickerCamera;
 File? imagePickerGallery;
 
 class _VisualFindingScreenState extends State<VisualFindingScreen> {
+  void swtichtheSplashScreen() {
+    Navigator.push(
+        context,
+        MaterialPageRoute(
+          builder: (context) => const MainViewScreen(),
+        ));
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -82,7 +92,10 @@ class _VisualFindingScreenState extends State<VisualFindingScreen> {
                           if (image != null) {
                             imagePickerGallery = File(image.path);
                           }
-                          ;
+                          Future.delayed(const Duration(seconds: 2),
+                              swtichtheSplashScreen);
+                          //Future.delayed will perform the funcation (discribed at the end) after the duration discribed in Duration
+
                           Navigator.push(
                               context,
                               MaterialPageRoute(
