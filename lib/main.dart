@@ -27,7 +27,7 @@ class MyApp extends StatelessWidget {
               fontWeight: FontWeight.w600,
               height: 1.5),
           headlineSmall: TextStyle(
-              fontSize: 24,
+              fontSize: 18,
               fontFamily: 'Metropolis',
               color: Color(0xffF6F6F6),
               fontWeight: FontWeight.w500,

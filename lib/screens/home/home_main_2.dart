@@ -1,17 +1,27 @@
+import 'package:assignment_ecommerce_app_ismail/screens/page_view.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_rating_bar/flutter_rating_bar.dart';
+import '../../modules/product_class.dart';
+import '../../widgets/item_tile01.dart';
 
 class HomeMain02 extends StatefulWidget {
-  const HomeMain02({super.key});
-
+  final Product? newProduct;
+  final Product? saleProduct;
+  const HomeMain02({super.key, this.newProduct, this.saleProduct});
   @override
   State<HomeMain02> createState() => _HomeMain02State();
 }
 
+String tempImage = 'assets/girlCoverPicture.jpg';
+
 class _HomeMain02State extends State<HomeMain02> {
+  void setTheState() {
+    setState(() {});
+  }
+
   @override
   Widget build(BuildContext context) {
     return SingleChildScrollView(
+      scrollDirection: Axis.vertical,
       child: Column(
         children: [
           Container(
@@ -19,7 +29,7 @@ class _HomeMain02State extends State<HomeMain02> {
             width: double.infinity,
             decoration: BoxDecoration(
                 image: DecorationImage(
-                    image: AssetImage('assets/girlcover02.jpg'),
+                    image: const AssetImage('assets/girlcover02.jpg'),
                     fit: BoxFit.cover,
                     alignment: Alignment.topCenter,
                     colorFilter: ColorFilter.mode(
@@ -60,8 +70,8 @@ class _HomeMain02State extends State<HomeMain02> {
             ),
           ),
           const SizedBox(height: 20),
-          Container(
-              height: 331,
+          SizedBox(
+              height: 337,
               width: double.infinity,
               child: Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 10),
@@ -75,6 +85,7 @@ class _HomeMain02State extends State<HomeMain02> {
                             'Sale',
                             style: Theme.of(context).textTheme.headlineLarge,
                           ),
+                          const SizedBox(height: 2),
                           Text('Super summer sale',
                               style: Theme.of(context).textTheme.titleSmall),
                         ]),
@@ -85,12 +96,19 @@ class _HomeMain02State extends State<HomeMain02> {
                           style: Theme.of(context).textTheme.titleSmall),
                     )
                   ]),
+                  const SizedBox(height: 5),
                   Expanded(
                     child: ListView.builder(
                         itemBuilder: ((context, index) {
-                          return showItemsTile();
+                          return TileWidget01(
+                            index: index,
+                            product: saleProduct,
+                            setTheState: setTheState,
+                          );
+
+                          // showItemsTile();
                         }),
-                        itemCount: 5,
+                        itemCount: widget.saleProduct?.products?.length ?? 5,
                         scrollDirection: Axis.horizontal,
                         physics: const AlwaysScrollableScrollPhysics()),
                   )
@@ -98,7 +116,7 @@ class _HomeMain02State extends State<HomeMain02> {
               )),
           const SizedBox(height: 20),
           SizedBox(
-              height: 331,
+              height: 337,
               width: double.infinity,
               child: Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 10),
@@ -112,6 +130,7 @@ class _HomeMain02State extends State<HomeMain02> {
                             'New',
                             style: Theme.of(context).textTheme.headlineLarge,
                           ),
+                          const SizedBox(height: 2),
                           Text('You’ve never seen it before!',
                               style: Theme.of(context).textTheme.titleSmall),
                         ]),
@@ -122,95 +141,24 @@ class _HomeMain02State extends State<HomeMain02> {
                           style: Theme.of(context).textTheme.titleSmall),
                     )
                   ]),
+                  const SizedBox(height: 5),
                   Expanded(
                     child: ListView.builder(
                         itemBuilder: ((context, index) {
-                          return showItemsTile();
+                          return TileWidget01(
+                            index: index,
+                            product: newProduct,
+                            setTheState: setTheState,
+                          );
                         }),
-                        itemCount: 5,
+                        itemCount: newProduct.products?.length ?? 5,
                         scrollDirection: Axis.horizontal,
                         physics: const AlwaysScrollableScrollPhysics()),
                   )
                 ]),
-              ))
+              )),
         ],
       ),
     );
-  }
-
-  Padding showItemsTile() {
-    return Padding(
-        padding: const EdgeInsets.all(8.0),
-        child: Container(
-          width: 150,
-          height: 260,
-          child: Column(
-              mainAxisAlignment: MainAxisAlignment.start,
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Container(
-                    height: 184,
-                    width: 148,
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(10),
-                      color: Colors.amberAccent,
-                    ),
-                    child: Column(
-                        mainAxisAlignment: MainAxisAlignment.start,
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Padding(
-                              padding: const EdgeInsets.only(left: 10, top: 10),
-                              child: Container(
-                                  height: 24,
-                                  width: 40,
-                                  decoration: BoxDecoration(
-                                      borderRadius: BorderRadius.circular(30),
-                                      color: Theme.of(context)
-                                          .colorScheme
-                                          .background),
-                                  child: Center(
-                                      child: Text("NEW",
-                                          style: Theme.of(context)
-                                              .textTheme
-                                              .bodySmall))))
-                        ])),
-                Row(children: [
-                  RatingBar(
-                    onRatingUpdate: (intt) {},
-                    maxRating: 1,
-                    minRating: 5,
-                    initialRating: 3,
-                    allowHalfRating: false,
-                    ratingWidget: RatingWidget(
-                        full: Icon(Icons.star,
-                            color: Theme.of(context).colorScheme.surface),
-                        half: Container(),
-                        empty: Icon(Icons.star_border,
-                            color: Theme.of(context).colorScheme.onSurface)),
-                    itemSize: 20,
-                    itemPadding: const EdgeInsets.symmetric(horizontal: 2.0),
-                  ),
-                  Text(
-                    '(10)',
-                    style: Theme.of(context).textTheme.titleSmall,
-                  )
-                ]),
-                Text('Dorothy Perkins',
-                    style: Theme.of(context).textTheme.titleSmall),
-                Text(
-                  "Evening Dress",
-                  style: Theme.of(context).textTheme.bodyLarge,
-                ),
-                Row(
-                  children: [
-                    Text('15\$', style: Theme.of(context).textTheme.titleSmall),
-                    Text('10\$',
-                        style: Theme.of(context).textTheme.titleSmall?.copyWith(
-                            color: Theme.of(context).colorScheme.primary)),
-                  ],
-                )
-              ]),
-        ));
   }
 }

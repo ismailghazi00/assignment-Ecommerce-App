@@ -3,7 +3,7 @@ import 'package:assignment_ecommerce_app_ismail/screens/initial_screens/vfinding
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 
-import '../main_view.dart';
+import '../page_view.dart';
 
 class VisualFindingScreen extends StatefulWidget {
   const VisualFindingScreen({super.key});
@@ -20,7 +20,7 @@ class _VisualFindingScreenState extends State<VisualFindingScreen> {
     Navigator.push(
         context,
         MaterialPageRoute(
-          builder: (context) => const MainViewScreen(),
+          builder: (context) => const PageViewScreen(),
         ));
   }
 
@@ -40,7 +40,8 @@ class _VisualFindingScreenState extends State<VisualFindingScreen> {
                 },
                 icon: const Icon(Icons.arrow_back_ios, size: 18)),
             const Spacer(),
-            Text('Visual search', style: Theme.of(context).textTheme.bodyLarge),
+            Text('Visual search',
+                style: Theme.of(context).textTheme.headlineSmall),
             const Spacer(),
             const SizedBox(width: 20)
           ]),

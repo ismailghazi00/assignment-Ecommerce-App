@@ -76,7 +76,7 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
         contentPadding:
             const EdgeInsetsDirectional.symmetric(horizontal: 10, vertical: 25),
         filled: true,
-        fillColor: Theme.of(context).colorScheme.surface,
+        fillColor: Theme.of(context).colorScheme.onSecondary,
         border: const OutlineInputBorder(),
         enabledBorder: const OutlineInputBorder(
             borderRadius: BorderRadius.all(Radius.circular(4)),

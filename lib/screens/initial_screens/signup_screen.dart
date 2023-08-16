@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:http/http.dart' as http;
 
 import 'log_in_screen.dart';
 
@@ -9,10 +10,37 @@ class SignUpScreen extends StatefulWidget {
   State<SignUpScreen> createState() => _SignUpScreenState();
 }
 
+TextEditingController nameSignUpController = TextEditingController();
+TextEditingController emailSignUpController = TextEditingController();
+TextEditingController passwordSignUpController = TextEditingController();
+
 class _SignUpScreenState extends State<SignUpScreen> {
+  Future<void> getLoginData() async {
+    // try{} what coed we put inside of tray will execut if there is an errror
+    // catch(e){} the error will be cathc in 'e' and the we would do perform acton with e like to print it or show it on screen
+    try {
+      http.Response response = await http.post(
+          //post api is to post data on server
+          //http.post need twoperametres to work
+          //01 is uri/url to post data on it
+          //02 the body/data what to post on the server
+          Uri.parse('https://ecommerce.salmanbediya.com/users/register'),
+          body: {
+            'name': nameSignUpController.text,
+            'email': emailSignUpController.text,
+            'password': passwordSignUpController.text,
+          });
+      print('-----------statusCode= $response.statusCode------------');
+    } catch (eror) {
+      print('Error Error Error $eror');
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+        resizeToAvoidBottomInset: false, //to ovied overflow when keborde isused
+
         backgroundColor: Theme.of(context).colorScheme.background,
         body: Padding(
             padding: const EdgeInsets.all(10),
@@ -44,16 +72,19 @@ class _SignUpScreenState extends State<SignUpScreen> {
               //---------------------- Text Fields
 
               TextField(
+                  controller: nameSignUpController,
                   style: Theme.of(context).textTheme.bodyMedium,
                   cursorColor: Theme.of(context).colorScheme.onBackground,
                   decoration: textFieldDecoration('Name')),
               const SizedBox(height: 10),
               TextField(
+                  controller: emailSignUpController,
                   style: Theme.of(context).textTheme.bodyMedium,
                   cursorColor: Theme.of(context).colorScheme.onBackground,
                   decoration: textFieldDecoration('Email')),
               const SizedBox(height: 10),
               TextField(
+                  controller: passwordSignUpController,
                   style: Theme.of(context).textTheme.bodyMedium,
                   cursorColor: Theme.of(context).colorScheme.onBackground,
                   decoration: textFieldDecoration('Password')),
@@ -79,6 +110,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
               //----------------------Sign Up Button
               ElevatedButton(
                   onPressed: () {
+                    getLoginData();
                     Navigator.push(
                         context,
                         MaterialPageRoute(
@@ -132,7 +164,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
         contentPadding:
             const EdgeInsetsDirectional.symmetric(horizontal: 10, vertical: 25),
         filled: true,
-        fillColor: Theme.of(context).colorScheme.surface,
+        fillColor: Theme.of(context).colorScheme.onSecondary,
         border: const OutlineInputBorder(),
         enabledBorder: const OutlineInputBorder(
             borderRadius: BorderRadius.all(Radius.circular(4)),

@@ -1,25 +1,88 @@
+import 'package:assignment_ecommerce_app_ismail/screens/product_card_scree.dart';
+import 'package:assignment_ecommerce_app_ismail/screens/testscreen.dart';
 import 'package:flutter/material.dart';
+import '../modules/product_class.dart';
+import 'categories_catlog_screen.dart';
+import 'categories_list_screen.dart';
+import 'package:http/http.dart' as http;
+import 'dart:convert';
 
-import 'home_main.dart';
+import 'home/home_main.dart';
+import 'home/home_main_2.dart';
 
-class MainViewScreen extends StatefulWidget {
-  const MainViewScreen({super.key});
-
+class PageViewScreen extends StatefulWidget {
+  const PageViewScreen({super.key});
   @override
-  State<MainViewScreen> createState() => _MainViewScreenState();
+  State<PageViewScreen> createState() => _PageViewScreenState();
 }
 
+Product newProduct = Product();
+Product saleProduct = Product();
+Product allProducts = Product();
+
+Categories categoryList = Categories();
 int selactedPageIndex = 0;
 PageController pageViewController = PageController();
 List<Widget> listofScreens = [
-  const HomeMian01(),
-  const Text('Shop'),
-  const Text('Bag'),
-  const Text('Favorites'),
-  const Text('Profile'),
+  HomeMian01(newProduct: newProduct),
+  CategoriesList(categoryList: categoryList),
+  const Text('fsdv'),
+  const Text('fsdv'),
+
+  // const ProductCardScreen(),
+  const TestScreen(),
+];
+List<Widget> allScreensList = [
+  HomeMain02(newProduct: newProduct, saleProduct: saleProduct),
 ];
 
-class _MainViewScreenState extends State<MainViewScreen> {
+class _PageViewScreenState extends State<PageViewScreen> {
+  void setTheState() {
+    return setState(() {});
+  }
+
+  @override
+  void initState() {
+    getProductNew();
+    setState(() {});
+    getCategoriesList();
+    getProductSale();
+    getAllProducts();
+    super.initState();
+  }
+
+  Future<void> getProductNew() async {
+    http.Response newResponse = await http.get(Uri.parse(
+        'https://ecommerce.salmanbediya.com/products/tag/new/getAll'));
+    setState(() {
+      newProduct = Product.fromJson(jsonDecode(newResponse.body));
+    });
+  }
+
+  Future<void> getAllProducts() async {
+    http.Response newResponse = await http
+        .get(Uri.parse('https://ecommerce.salmanbediya.com/products/getAll'));
+    setState(() {
+      allProducts = Product.fromJson(jsonDecode(newResponse.body));
+    });
+  }
+
+  Future<void> getProductSale() async {
+    http.Response newResponse = await http.get(Uri.parse(
+        'https://ecommerce.salmanbediya.com/products/tag/sale/getAll'));
+    setState(() {
+      saleProduct = Product.fromJson(jsonDecode(newResponse.body));
+    });
+  }
+
+  Future<void> getCategoriesList() async {
+    http.Response newResponse = await http.get(Uri.parse(
+        'https://ecommerce.salmanbediya.com/products/category/getAll'));
+    setState(() {
+      categoryList = Categories.fromJson(jsonDecode(newResponse.body));
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(

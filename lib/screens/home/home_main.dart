@@ -1,16 +1,24 @@
+import 'package:assignment_ecommerce_app_ismail/screens/page_view.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_rating_bar/flutter_rating_bar.dart';
+import '../../modules/product_class.dart';
 
+import '../../widgets/item_tile01.dart';
 import 'home_main_2.dart';
 
 class HomeMian01 extends StatefulWidget {
-  const HomeMian01({super.key});
+  Product? newProduct;
+
+  HomeMian01({super.key, this.newProduct});
 
   @override
   State<HomeMian01> createState() => _HomeMian01State();
 }
 
 class _HomeMian01State extends State<HomeMian01> {
+  void setTheState() {
+    setState(() {});
+  }
+
   @override
   Widget build(BuildContext context) {
     return SingleChildScrollView(
@@ -69,7 +77,7 @@ class _HomeMian01State extends State<HomeMian01> {
             ),
           ),
           const SizedBox(height: 20),
-          Container(
+          SizedBox(
               height: 331,
               width: double.infinity,
               child: Padding(
@@ -94,12 +102,17 @@ class _HomeMian01State extends State<HomeMian01> {
                           style: Theme.of(context).textTheme.titleSmall),
                     )
                   ]),
+                  const SizedBox(height: 3),
                   Expanded(
                     child: ListView.builder(
                         itemBuilder: ((context, index) {
-                          return showItemsTile();
+                          return TileWidget01(
+                            index: index,
+                            product: newProduct,
+                            setTheState: setTheState,
+                          );
                         }),
-                        itemCount: 5,
+                        itemCount: newProduct.products?.length ?? 5,
                         scrollDirection: Axis.horizontal,
                         physics: const AlwaysScrollableScrollPhysics()),
                   )
@@ -108,81 +121,5 @@ class _HomeMian01State extends State<HomeMian01> {
         ],
       ),
     );
-  }
-
-  Padding showItemsTile() {
-    return Padding(
-        padding: const EdgeInsets.all(8.0),
-        child: Container(
-          width: 150,
-          height: 260,
-          child: Column(
-              mainAxisAlignment: MainAxisAlignment.start,
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Container(
-                    height: 184,
-                    width: 148,
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(10),
-                      color: Colors.amberAccent,
-                    ),
-                    child: Column(
-                        mainAxisAlignment: MainAxisAlignment.start,
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Padding(
-                              padding: const EdgeInsets.only(left: 10, top: 10),
-                              child: Container(
-                                  height: 24,
-                                  width: 40,
-                                  decoration: BoxDecoration(
-                                      borderRadius: BorderRadius.circular(30),
-                                      color: Theme.of(context)
-                                          .colorScheme
-                                          .background),
-                                  child: Center(
-                                      child: Text("NEW",
-                                          style: Theme.of(context)
-                                              .textTheme
-                                              .bodySmall))))
-                        ])),
-                Row(children: [
-                  RatingBar(
-                    onRatingUpdate: (intt) {},
-                    maxRating: 1,
-                    minRating: 5,
-                    initialRating: 3,
-                    allowHalfRating: false,
-                    ratingWidget: RatingWidget(
-                        full: Icon(Icons.star,
-                            color: Theme.of(context).colorScheme.surface),
-                        half: Container(),
-                        empty: Icon(Icons.star_border,
-                            color: Theme.of(context).colorScheme.onSurface)),
-                    itemSize: 20,
-                    itemPadding: const EdgeInsets.symmetric(horizontal: 2.0),
-                  ),
-                  Text(
-                    '(10)',
-                    style: Theme.of(context).textTheme.titleSmall,
-                  )
-                ]),
-                Text('Dorothy Perkins',
-                    style: Theme.of(context).textTheme.titleSmall),
-                Text(
-                  "Evening Dress",
-                  style: Theme.of(context).textTheme.bodyLarge,
-                ),
-                Row(
-                  children: [
-                    Text('15\$', style: Theme.of(context).textTheme.titleSmall),
-                    Text('10\$',
-                        style: Theme.of(context).textTheme.titleSmall?.copyWith(
-                            color: Theme.of(context).colorScheme.primary)),
-                  ],
-                )
-              ]),
-        ));
   }
 }
