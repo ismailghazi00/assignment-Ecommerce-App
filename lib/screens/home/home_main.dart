@@ -112,7 +112,7 @@ class _HomeMian01State extends State<HomeMian01> {
                             setTheState: setTheState,
                           );
                         }),
-                        itemCount: newProduct.products?.length ?? 5,
+                        itemCount: newProduct.products?.length,
                         scrollDirection: Axis.horizontal,
                         physics: const AlwaysScrollableScrollPhysics()),
                   )

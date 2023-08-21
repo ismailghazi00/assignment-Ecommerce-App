@@ -20,7 +20,7 @@ class _VisualFindingSplashScreenState extends State<VisualFindingSplashScreen> {
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              Container(
+              SizedBox(
                 height: 237,
                 width: 235,
                 child: Image.file(

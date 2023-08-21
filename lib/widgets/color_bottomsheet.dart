@@ -1,8 +1,16 @@
 import 'package:flutter/material.dart';
 
-class ColorBottomSheet extends StatelessWidget {
-  const ColorBottomSheet({super.key});
+class ColorBottomSheet extends StatefulWidget {
+  String? productColor;
+  Function setTheState;
+  ColorBottomSheet(
+      {super.key, required this.productColor, required this.setTheState});
 
+  @override
+  State<ColorBottomSheet> createState() => _ColorBottomSheetState();
+}
+
+class _ColorBottomSheetState extends State<ColorBottomSheet> {
   @override
   Widget build(BuildContext context) {
     return SizedBox(
@@ -12,14 +20,14 @@ class ColorBottomSheet extends StatelessWidget {
         Text('Select size', style: Theme.of(context).textTheme.headlineSmall),
         const SizedBox(height: 15),
         Row(mainAxisAlignment: MainAxisAlignment.spaceEvenly, children: [
-          sizeandColorContainer("Blue"),
-          sizeandColorContainer("Black"),
-          sizeandColorContainer("White")
+          salectColor("Blue"),
+          salectColor("Black"),
+          salectColor("White")
         ]),
         const SizedBox(height: 10),
         Row(mainAxisAlignment: MainAxisAlignment.spaceEvenly, children: [
-          sizeandColorContainer("Red"),
-          sizeandColorContainer("Purpal"),
+          salectColor("Red"),
+          salectColor("Purpal"),
           const SizedBox(
             width: 100,
             height: 40,
@@ -38,7 +46,9 @@ class ColorBottomSheet extends StatelessWidget {
         const Divider(),
         const SizedBox(height: 15),
         ElevatedButton(
-            onPressed: () {},
+            onPressed: () {
+              Navigator.pop(context);
+            },
             style: ElevatedButton.styleFrom(
                 fixedSize: const Size(343, 48),
                 shadowColor: Theme.of(context).colorScheme.primary,
@@ -51,15 +61,20 @@ class ColorBottomSheet extends StatelessWidget {
     );
   }
 
-  Container sizeandColorContainer(String childText,
-      {double? w, double? h, Color? c}) {
-    return Container(
-        width: w ?? 100,
-        height: h ?? 40,
-        decoration: BoxDecoration(
-            color: c ?? Colors.transparent,
-            borderRadius: BorderRadius.circular(10),
-            border: Border.all(color: const Color(0xffABB4BD))),
-        child: Center(child: Text(childText)));
+  InkWell salectColor(String childText, {double? w, double? h, Color? c}) {
+    return InkWell(
+      onTap: () {
+        widget.productColor = childText;
+        widget.setTheState();
+      },
+      child: Container(
+          width: w ?? 100,
+          height: h ?? 40,
+          decoration: BoxDecoration(
+              color: c ?? Colors.transparent,
+              borderRadius: BorderRadius.circular(10),
+              border: Border.all(color: const Color(0xffABB4BD))),
+          child: Center(child: Text(childText))),
+    );
   }
 }

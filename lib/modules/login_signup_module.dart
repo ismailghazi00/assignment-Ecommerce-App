@@ -22,19 +22,6 @@ class Login {
     }
     return data;
   }
-
-//   //this is the way we est data to SheredPrefrences/save data to local mamory
-//   Future<void> setData() async {
-//     SharedPreferences prefs = await SharedPreferences.getInstance();
-//     await prefs.setStringList();
-//   }
-// //this is the way we Get data form SheredPrefrences/get  data from local mamory
-//   Future<void> getData() async {
-//     SharedPreferences prefs = await SharedPreferences.getInstance();
-//     List<String>? todoInString = prefs.getStringList('todo_list');
-//     convertStringListInToTodoList(todoInString ?? []);
-//     print('TodoList lenght in GetData Funcation ${todoList.length}');
-//   }
 }
 
 class Data {
@@ -71,5 +58,22 @@ class Data {
     data['date_modified'] = this.dateModified;
     data['date_created'] = this.dateCreated;
     return data;
+  }
+}
+
+class LogInModules {
+  bool isUserLogin = false;
+  Future<void> saveLogin(bool isUserLogin) async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    await prefs.setBool('isUserLogin', isUserLogin);
+    print(
+        '-------------------------------------save funcation call ho gaya log in boolll ${isUserLogin}');
+  }
+
+  Future<void> getLoginData() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    isUserLogin = prefs.getBool('isUserLogin') ?? false;
+    print(
+        '-------------------------------------get funcation call ho gaya log in boolll ${isUserLogin}');
   }
 }

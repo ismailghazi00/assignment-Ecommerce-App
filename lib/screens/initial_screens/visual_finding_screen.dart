@@ -116,6 +116,26 @@ class _VisualFindingScreenState extends State<VisualFindingScreen> {
                               borderRadius: BorderRadius.circular(50))),
                       child: Text('UPLOAD AN IMAGE',
                           style: Theme.of(context).textTheme.bodyMedium)),
+                  const SizedBox(height: 15),
+                  Row(mainAxisAlignment: MainAxisAlignment.end, children: [
+                    Text(
+                      'Skip',
+                      style: Theme.of(context).textTheme.bodyMedium,
+                    ),
+                    //-------------------Skip tp Page view screen Button
+                    IconButton(
+                        onPressed: () {
+                          Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) =>
+                                      const PageViewScreen()));
+                        },
+                        icon: Icon(
+                          Icons.arrow_right_alt,
+                          color: Theme.of(context).colorScheme.primary,
+                        ))
+                  ]),
                   const SizedBox(height: 100),
                 ],
               ),

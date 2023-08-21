@@ -1,18 +1,19 @@
+import 'package:assignment_ecommerce_app_ismail/modules/review_class.dart';
+import 'package:assignment_ecommerce_app_ismail/screens/page_view.dart';
 import 'package:assignment_ecommerce_app_ismail/screens/reviews_screen.dart';
 import 'package:flutter/material.dart';
-import 'package:carousel_slider/carousel_slider.dart';
+// import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
-import 'package:flutter/material.dart';
-
-import '../modules/product_class.dart';
 import '../widgets/color_bottomsheet.dart';
 import '../widgets/item_tile01.dart';
 import '../widgets/size_botomsheet.dart';
+import '../modules/product_class.dart';
 
 class ProductCardScreen extends StatefulWidget {
   final Function setTheState;
   final int index;
-  Product? product;
+  Product product;
+
   ProductCardScreen(
       {super.key,
       required this.product,
@@ -28,6 +29,11 @@ class _ProductCardScreenState extends State<ProductCardScreen> {
       const Icon(Icons.favorite_border, color: Color(0xffABB4BD));
   Icon checkIcon = const Icon(Icons.favorite, color: Color(0xffEF3651));
   bool isFavorite = false;
+  String? productColor;
+  String? productSize;
+  void setTheState() {
+    return setState(() {});
+  }
   // final imageList = [
   //   Image.asset('assets/girlCoverPicture.jpg',
   //       fit: BoxFit.cover, alignment: Alignment.topCenter),
@@ -68,7 +74,7 @@ class _ProductCardScreenState extends State<ProductCardScreen> {
         SizedBox(
             height: 413,
             child: Image.network(
-                '${widget.product?.products?[widget.index].image}',
+                '${widget.product.products?[widget.index].image}',
                 fit: BoxFit.cover,
                 alignment: Alignment.topCenter)),
 
@@ -103,22 +109,30 @@ class _ProductCardScreenState extends State<ProductCardScreen> {
                           showModalBottomSheet(
                             context: context,
                             builder: (context) {
-                              return SizeBottomSheet();
+                              return SizeBottomSheet(
+                                productSize: productSize,
+                                setTheState: setTheState,
+                              );
                             },
                           );
                         },
-                        child: sizeandColorContainer('Size')),
+                        child: sizeandColorContainer(
+                            productSize == null ? 'Size' : '$productSize')),
                     const SizedBox(width: 10),
                     InkWell(
                         onTap: () {
                           showModalBottomSheet(
                             context: context,
                             builder: (context) {
-                              return ColorBottomSheet();
+                              return ColorBottomSheet(
+                                productColor: productColor,
+                                setTheState: setTheState,
+                              );
                             },
                           );
                         },
-                        child: sizeandColorContainer('Color')),
+                        child: sizeandColorContainer(
+                            productColor == null ? 'Color' : '$productColor')),
                     ElevatedButton(
                         style: ElevatedButton.styleFrom(
                             backgroundColor:
@@ -136,29 +150,35 @@ class _ProductCardScreenState extends State<ProductCardScreen> {
                 SizedBox(
                   width: 300,
                   child: Text(
-                    '${widget.product?.products?[widget.index].name}',
+                    '${widget.product.products?[widget.index].name}',
                     style: Theme.of(context).textTheme.bodyLarge,
                   ),
                 ),
                 const Spacer(),
                 Text(
-                  '${widget.product?.products?[widget.index].price.toString()}Rs',
+                  '${double.parse(widget.product.products![widget.index].price.toString()).toStringAsFixed(0)}Rs',
                   style: Theme.of(context).textTheme.bodyLarge,
                 ),
               ]),
-              Text('${widget.product?.products?[widget.index].category?.name}',
+              Text('${widget.product.products?[widget.index].category?.name}',
                   style: Theme.of(context).textTheme.titleSmall),
               const SizedBox(height: 10),
 
               //----------------------Ratting Bar
               InkWell(
                 onTap: () {
+                  setState(() {
+                    apiController.getReviews(
+                      reviewsID: '${widget.product.products?[widget.index].id}',
+                    );
+                  });
+                  print(
+                      '------------------------------------Review lenght ${review.reviews?.length}');
                   Navigator.push(
                       context,
                       MaterialPageRoute(
                           builder: (context) => ReviewsScreen(
-                                product: widget.product,
-                                index: widget.index,
+                                review: review,
                                 setTheState: widget.setTheState,
                               )));
                 },
@@ -168,7 +188,7 @@ class _ProductCardScreenState extends State<ProductCardScreen> {
                     maxRating: 5,
                     minRating: 1,
                     initialRating: double.parse(
-                        '${widget.product?.products?[widget.index].rating}'),
+                        '${widget.product.products?[widget.index].rating}'),
                     allowHalfRating: false,
                     itemSize: 18,
                     // itemPadding: const EdgeInsets.symmetric(horizontal:0),
@@ -180,8 +200,8 @@ class _ProductCardScreenState extends State<ProductCardScreen> {
                             color: Theme.of(context).colorScheme.onSurface)),
                   ),
                   Text(
-                    widget.product?.products?[widget.index].reviews != null
-                        ? '(${widget.product?.products?[widget.index].reviews})'
+                    widget.product.products?[widget.index].reviews != null
+                        ? '(${widget.product.products?[widget.index].reviews})'
                         : '(0)',
                     style: Theme.of(context).textTheme.titleSmall,
                   ),
@@ -190,12 +210,11 @@ class _ProductCardScreenState extends State<ProductCardScreen> {
               const SizedBox(height: 10),
               SizedBox(
                 width: double.infinity,
-                height: 70,
                 child: SingleChildScrollView(
                   //scrollable text
                   scrollDirection: Axis.vertical,
                   child: Text(
-                    '${widget.product?.products?[widget.index].description}',
+                    '${widget.product.products?[widget.index].description}',
                     style: Theme.of(context)
                         .textTheme
                         .bodyMedium
@@ -231,7 +250,7 @@ class _ProductCardScreenState extends State<ProductCardScreen> {
         ),
         const Divider(),
         ListTile(
-          title: Text('Suoort', style: Theme.of(context).textTheme.bodyLarge),
+          title: Text('Support', style: Theme.of(context).textTheme.bodyLarge),
           trailing: IconButton(
               padding: EdgeInsets.zero,
               onPressed: () {},
@@ -270,7 +289,7 @@ class _ProductCardScreenState extends State<ProductCardScreen> {
 
                         // showItemsTile();
                       }),
-                      itemCount: widget.product?.products?.length ?? 5,
+                      itemCount: widget.product.products?.length ?? 5,
                       scrollDirection: Axis.horizontal,
                       physics: const AlwaysScrollableScrollPhysics()),
                 )

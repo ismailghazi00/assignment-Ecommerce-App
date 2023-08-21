@@ -1,14 +1,16 @@
 // import 'package:assignment_ecommerce_app_ismail/screens/page_view.dart';
+import 'package:assignment_ecommerce_app_ismail/screens/page_view.dart';
 import 'package:flutter/material.dart';
+import 'package:lottie/lottie.dart';
 import '../modules/product_class.dart';
 import '../widgets/item_tile02.dart';
 
 class CategotiesCatalogScreen extends StatefulWidget {
   Categories? categoryList;
-  Product? allProducts;
-  int? categorieIndex;
+  Product product;
+  String? categoryName;
   CategotiesCatalogScreen(
-      {super.key, this.categoryList, this.categorieIndex, this.allProducts});
+      {super.key, this.categoryList, this.categoryName, required this.product});
 
   @override
   State<CategotiesCatalogScreen> createState() =>
@@ -43,7 +45,9 @@ class _CategotiesCatalogScreenState extends State<CategotiesCatalogScreen> {
       Padding(
         padding: const EdgeInsets.only(left: 10),
         child: Text(
-            '${widget.categoryList?.categories?[widget.categorieIndex ?? 0].name}',
+            widget.categoryName == null
+                ? '${widget.product.products?[0].category?.name}'
+                : '${widget.categoryName}',
             style: Theme.of(context).textTheme.headlineLarge?.copyWith(
                 fontSize: 34, fontWeight: FontWeight.w700, height: 0)),
       ),
@@ -63,13 +67,19 @@ class _CategotiesCatalogScreenState extends State<CategotiesCatalogScreen> {
             child: Expanded(
                 child: ListView.builder(
                     scrollDirection: Axis.horizontal,
-                    itemCount: widget.categoryList?.categories?.length ?? 5,
+                    itemCount: widget.categoryList?.categories?.length,
                     itemBuilder: ((context, index) {
                       return Padding(
                         padding: const EdgeInsets.symmetric(horizontal: 3),
                         child: ElevatedButton(
                             //----------------------Categories Buttons
-                            onPressed: () {},
+                            onPressed: () {
+                              setState(() {
+                                apiController.getproductDynimic(
+                                    categoryID:
+                                        "${widget.categoryList?.categories?[index].id}");
+                              });
+                            },
                             style: ElevatedButton.styleFrom(
                               shape: RoundedRectangleBorder(
                                   borderRadius: BorderRadius.circular(50)),
@@ -90,20 +100,28 @@ class _CategotiesCatalogScreenState extends State<CategotiesCatalogScreen> {
                     })))),
       ),
       const SizedBox(height: 15),
-      Expanded(
-          child: ListView.builder(
-              itemCount: widget.allProducts?.products?.length ?? 5,
-              itemBuilder: ((context, index) {
-                return Column(
-                  children: [
-                    TileWidget02(
-                      product: widget.allProducts,
-                      index: index,
-                      setTheState: setTheState,
-                    ),
-                  ],
-                );
-              })))
+      widget.product.products == null
+          ? Center(
+              child: SizedBox(
+                  height: 100,
+                  child: Flexible(
+                      child:
+                          Lottie.asset('assets/task.json', fit: BoxFit.fill))),
+            )
+          : Expanded(
+              child: ListView.builder(
+                  itemCount: widget.product.products?.length,
+                  itemBuilder: ((context, index) {
+                    return Column(
+                      children: [
+                        TileWidget02(
+                          product: widget.product,
+                          index: index,
+                          setTheState: setTheState,
+                        ),
+                      ],
+                    );
+                  })))
     ]));
   }
 }

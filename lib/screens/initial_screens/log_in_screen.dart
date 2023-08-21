@@ -1,5 +1,5 @@
 import 'dart:convert';
-
+import 'package:assignment_ecommerce_app_ismail/screens/initial_screens/visual_finding_screen.dart';
 import 'package:assignment_ecommerce_app_ismail/screens/page_view.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart';
@@ -8,7 +8,11 @@ import 'forgot_screen.dart';
 import 'package:http/http.dart' as http;
 
 class LogInScreen extends StatefulWidget {
-  const LogInScreen({super.key});
+  // LogInModules? logInModules;
+  LogInScreen({
+    super.key,
+    // this.logInModules
+  });
 
   @override
   State<LogInScreen> createState() => _LogInScreenState();
@@ -18,6 +22,7 @@ class _LogInScreenState extends State<LogInScreen> {
   TextEditingController emailLoginController = TextEditingController();
   TextEditingController passwordLoginController = TextEditingController();
   Login _login = Login();
+  bool isUserLogin = false;
   Future<void> loginAPIfuncation() async {
     try {
       Response response = await http.put(
@@ -31,6 +36,13 @@ class _LogInScreenState extends State<LogInScreen> {
       if (response.statusCode == 200) {
         setState(() {
           _login = Login.fromJson(jsonDecode(response.body));
+          isUserLogin = true;
+          logInModules.saveLogin(isUserLogin);
+
+          print(
+              '-------------------------------------is user Login at login page ${isUserLogin}');
+          print(
+              '-------------------------------------is user Login${logInModules.isUserLogin}');
         });
       } else {}
     } catch (error) {
@@ -110,14 +122,14 @@ class _LogInScreenState extends State<LogInScreen> {
                     ElevatedButton(
                         onPressed: () {
                           loginAPIfuncation().then((value) {
-                            if (_login.message == "User login successfully") {
+                            if (isUserLogin == true) {
                               Navigator.push(
                                   context,
                                   MaterialPageRoute(
-                                      builder: (context) =>
-                                          const PageViewScreen()
-                                      // VisualFindingScreen(),
-                                      ));
+                                    builder: (context) =>
+                                        // const PageViewScreen()
+                                        const VisualFindingScreen(),
+                                  ));
                             } else {}
                           });
                         },

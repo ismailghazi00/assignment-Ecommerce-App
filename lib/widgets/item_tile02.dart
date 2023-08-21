@@ -7,7 +7,7 @@ import '../screens/product_card_scree.dart';
 class TileWidget02 extends StatefulWidget {
   final Function setTheState;
   final int index;
-  Product? product;
+  Product product;
 
   TileWidget02(
       {super.key,

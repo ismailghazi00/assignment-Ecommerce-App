@@ -1,19 +1,43 @@
 import 'package:assignment_ecommerce_app_ismail/screens/page_view.dart';
 import 'package:flutter/material.dart';
 import '../modules/product_class.dart';
-import 'categories_catlog_screen.dart';
+import 'categories_catlog_screen02.dart';
 
 class CategoriesList extends StatefulWidget {
   Categories? categoryList;
-  Product? allProducts;
-
-  CategoriesList({super.key, this.categoryList, this.allProducts});
+  // Product? allProducts;
+  // Product productdynimic;
+  CategoriesList({
+    super.key,
+    this.categoryList,
+    // this.allProducts,
+    // required this.productdynimic
+  });
 
   @override
   State<CategoriesList> createState() => _CategoriesListState();
 }
 
 class _CategoriesListState extends State<CategoriesList> {
+  void getproductData(String id) {
+    setState(() {
+      apiController.getproductDynimic(
+        categoryID: id,
+      );
+    });
+  }
+
+  void navigatetoNext() {
+    Navigator.push(
+        context,
+        MaterialPageRoute(
+            builder: (context) => CategotiesCatalogScreen(
+                  product: productdynimic,
+                  categoryList: categoryList,
+                  categoryName: null,
+                )));
+  }
+
   @override
   Widget build(BuildContext context) {
     return Padding(
@@ -43,10 +67,9 @@ class _CategoriesListState extends State<CategoriesList> {
                     context,
                     MaterialPageRoute(
                         builder: (context) => CategotiesCatalogScreen(
-                              categorieIndex: 0,
-                              allProducts: allProducts,
+                              product: allProducts,
                               categoryList: categoryList,
-                              //we should pass all the peramaters from one place not pass some from on place and remaning from other place it will not work.
+                              categoryName: 'All Categories',
                             )
                         // VisualFindingScreen(),
                         ));
@@ -73,14 +96,13 @@ class _CategoriesListState extends State<CategoriesList> {
                     padding: const EdgeInsets.only(left: 20),
                     child: TextButton(
                         onPressed: () {
-                          Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                  builder: (context) => CategotiesCatalogScreen(
-                                        categorieIndex: index,
-                                        allProducts: allProducts,
-                                        categoryList: categoryList,
-                                      )));
+                          setState(() {
+                            getproductData(
+                                "${categoryList.categories?[index].id}");
+                          });
+
+                          Future.delayed(
+                              const Duration(seconds: 1), navigatetoNext);
                         },
                         child: Text("${categoryList.categories?[index].name}",
                             style: Theme.of(context).textTheme.bodyLarge)),

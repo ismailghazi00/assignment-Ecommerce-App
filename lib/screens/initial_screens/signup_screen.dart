@@ -56,7 +56,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                         Navigator.push(
                             context,
                             MaterialPageRoute(
-                                builder: (context) => const LogInScreen()));
+                                builder: (context) => LogInScreen()));
                       },
                       icon: const Icon(Icons.arrow_back_ios, size: 18)),
                 ],
@@ -99,7 +99,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                       Navigator.push(
                           context,
                           MaterialPageRoute(
-                              builder: (context) => const LogInScreen()));
+                              builder: (context) => LogInScreen()));
                     },
                     icon: Icon(
                       Icons.arrow_right_alt,
@@ -111,10 +111,8 @@ class _SignUpScreenState extends State<SignUpScreen> {
               ElevatedButton(
                   onPressed: () {
                     getLoginData();
-                    Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                            builder: (context) => const LogInScreen()));
+                    Navigator.push(context,
+                        MaterialPageRoute(builder: (context) => LogInScreen()));
                   },
                   style: ElevatedButton.styleFrom(
                       fixedSize: const Size(343, 48),

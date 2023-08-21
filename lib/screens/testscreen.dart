@@ -1,14 +1,19 @@
+import 'package:assignment_ecommerce_app_ismail/screens/page_view.dart';
 import 'package:assignment_ecommerce_app_ismail/screens/product_card_scree.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
+import '../modules/login_signup_module.dart';
 import '../widgets/item_tile01.dart';
 import '../widgets/item_tile02.dart';
 
 class TestScreen extends StatefulWidget {
-  const TestScreen({super.key});
-
+  LogInModules? logInModules;
+  TestScreen({super.key, this.logInModules});
   @override
   State<TestScreen> createState() => _TestScreenState();
 }
+
+bool isUserLogin = true;
 
 class _TestScreenState extends State<TestScreen> {
   void setTheState() {
@@ -36,12 +41,13 @@ class _TestScreenState extends State<TestScreen> {
       const SizedBox(height: 10),
       ElevatedButton(
           onPressed: () {
-            // Navigator.push(
-            //     context,
-            //     MaterialPageRoute(
-            //         builder: (context) => const ProductCardScreen()
-            //         // VisualFindingScreen(),
-            //         ));
+            setState(() {
+              isUserLogin = false;
+              logInModules.saveLogin(isUserLogin);
+              print(
+                  '-------------------------------------is user Login${widget.logInModules?.isUserLogin}');
+            });
+            SystemNavigator.pop(); //to exix the app
           },
           style: ElevatedButton.styleFrom(
               fixedSize: const Size(160, 36),
@@ -49,7 +55,7 @@ class _TestScreenState extends State<TestScreen> {
               elevation: 8, //Shadow radius
               shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(50))),
-          child: Text('Check', style: Theme.of(context).textTheme.bodyMedium)),
+          child: Text('Logout', style: Theme.of(context).textTheme.bodyMedium)),
     ]);
   }
 }

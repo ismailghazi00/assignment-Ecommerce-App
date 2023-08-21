@@ -113,8 +113,12 @@ class _TileWidget01State extends State<TileWidget01> {
                     onRatingUpdate: (intt) {},
                     maxRating: 5,
                     minRating: 1,
-                    initialRating: double.parse(
-                        '${widget.product?.products?[widget.index].rating}'),
+                    initialRating: widget
+                                .product?.products?[widget.index].rating ==
+                            null
+                        ? 0
+                        : double.parse(
+                            '${widget.product?.products?[widget.index].rating}'),
                     allowHalfRating: false,
                     itemSize: 18,
                     // itemPadding: const EdgeInsets.symmetric(horizontal:0),
