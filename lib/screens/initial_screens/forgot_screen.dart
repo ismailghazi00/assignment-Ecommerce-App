@@ -11,23 +11,20 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+        appBar: AppBar(
+          leading: IconButton(
+              padding: EdgeInsets.zero,
+              onPressed: () {
+                Navigator.pop(context);
+              },
+              icon: const Icon(Icons.arrow_back_ios)),
+        ),
         backgroundColor: Theme.of(context).colorScheme.background,
         body: Padding(
             padding: const EdgeInsets.all(10),
             child: Column(children: [
               const SizedBox(height: 10),
-              Row(
-                children: [
-                  //------------------Back Button
 
-                  IconButton(
-                      padding: EdgeInsets.zero,
-                      onPressed: () {
-                        Navigator.pop(context);
-                      },
-                      icon: const Icon(Icons.arrow_back_ios, size: 18)),
-                ],
-              ),
               const SizedBox(height: 20),
               Row(
                 children: [
@@ -42,17 +39,20 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
               const SizedBox(height: 10),
 
               //---------------------- Text Fields
-              TextField(
-                  style: Theme.of(context).textTheme.bodyMedium,
-                  cursorColor: Theme.of(context).colorScheme.onBackground,
-                  decoration: textFieldDecoration('Email')),
-              Text(
-                'Not a valid email address. Should be your@email.com',
-                style: Theme.of(context)
-                    .textTheme
-                    .bodySmall
-                    ?.copyWith(color: Theme.of(context).colorScheme.error),
+              Form(
+                autovalidateMode: AutovalidateMode.onUserInteraction,
+                child: TextFormField(
+                    validator: (value) {
+                      if (value != null && value.length < 6) {
+                        return 'Not a valid email address. Should be your@email.com';
+                      }
+                      return null;
+                    },
+                    style: Theme.of(context).textTheme.bodyMedium,
+                    cursorColor: Theme.of(context).colorScheme.onBackground,
+                    decoration: textFieldDecoration('Email')),
               ),
+
               const SizedBox(height: 50),
 
               //----------------------Login Button

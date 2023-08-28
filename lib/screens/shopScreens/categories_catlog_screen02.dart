@@ -1,16 +1,16 @@
 // import 'package:assignment_ecommerce_app_ismail/screens/page_view.dart';
-import 'package:assignment_ecommerce_app_ismail/screens/page_view.dart';
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:lottie/lottie.dart';
-import '../modules/product_class.dart';
-import '../widgets/item_tile02.dart';
+import '../../modules/product_class.dart';
+import 'package:http/http.dart' as http;
+
+import '../../widgets/item_tile02.dart';
 
 class CategotiesCatalogScreen extends StatefulWidget {
-  Categories? categoryList;
-  Product product;
-  String? categoryName;
-  CategotiesCatalogScreen(
-      {super.key, this.categoryList, this.categoryName, required this.product});
+  String catagegoryID;
+  CategotiesCatalogScreen({super.key, required this.catagegoryID});
 
   @override
   State<CategotiesCatalogScreen> createState() =>
@@ -20,6 +20,42 @@ class CategotiesCatalogScreen extends StatefulWidget {
 class _CategotiesCatalogScreenState extends State<CategotiesCatalogScreen> {
   void setTheState() {
     return setState(() {});
+  }
+
+  Categories? categoryList;
+  Product? product;
+  @override
+  void initState() {
+    widget.catagegoryID == 'all'
+        ? getallProduct()
+        : getproductDynimicw(widget.catagegoryID);
+    getCategoriesList();
+
+    super.initState();
+  }
+
+  Future<void> getproductDynimicw(String iD) async {
+    http.Response newResponse = await http.get(Uri.parse(
+        'https://ecommerce.salmanbediya.com/products/get/category/$iD'));
+    setState(() {
+      product = Product.fromJson(jsonDecode(newResponse.body));
+    });
+  }
+
+  Future<void> getallProduct() async {
+    http.Response newResponse = await http
+        .get(Uri.parse('https://ecommerce.salmanbediya.com/products/getAll'));
+    setState(() {
+      product = Product.fromJson(jsonDecode(newResponse.body));
+    });
+  }
+
+  Future<void> getCategoriesList() async {
+    http.Response newResponse = await http.get(Uri.parse(
+        'https://ecommerce.salmanbediya.com/products/category/getAll'));
+    setState(() {
+      categoryList = Categories.fromJson(jsonDecode(newResponse.body));
+    });
   }
 
   @override
@@ -45,9 +81,9 @@ class _CategotiesCatalogScreenState extends State<CategotiesCatalogScreen> {
       Padding(
         padding: const EdgeInsets.only(left: 10),
         child: Text(
-            widget.categoryName == null
-                ? '${widget.product.products?[0].category?.name}'
-                : '${widget.categoryName}',
+            widget.catagegoryID == 'all'
+                ? 'All products'
+                : product?.products?[0].category?.name ?? 'loading',
             style: Theme.of(context).textTheme.headlineLarge?.copyWith(
                 fontSize: 34, fontWeight: FontWeight.w700, height: 0)),
       ),
@@ -67,18 +103,15 @@ class _CategotiesCatalogScreenState extends State<CategotiesCatalogScreen> {
             child: Expanded(
                 child: ListView.builder(
                     scrollDirection: Axis.horizontal,
-                    itemCount: widget.categoryList?.categories?.length,
+                    itemCount: categoryList?.categories?.length,
                     itemBuilder: ((context, index) {
                       return Padding(
                         padding: const EdgeInsets.symmetric(horizontal: 3),
                         child: ElevatedButton(
                             //----------------------Categories Buttons
                             onPressed: () {
-                              setState(() {
-                                apiController.getproductDynimic(
-                                    categoryID:
-                                        "${widget.categoryList?.categories?[index].id}");
-                              });
+                              getproductDynimicw(
+                                  "${categoryList?.categories?[index].id}");
                             },
                             style: ElevatedButton.styleFrom(
                               shape: RoundedRectangleBorder(
@@ -88,7 +121,8 @@ class _CategotiesCatalogScreenState extends State<CategotiesCatalogScreen> {
                               // fixedSize: const Size(100, 30), //if i hide the fixed size button will take as musch spae as its needs
                             ),
                             child: Text(
-                                '${widget.categoryList?.categories?[index].name}',
+                                categoryList?.categories?[index].name ??
+                                    'loading',
                                 style: Theme.of(context)
                                     .textTheme
                                     .titleMedium
@@ -100,22 +134,31 @@ class _CategotiesCatalogScreenState extends State<CategotiesCatalogScreen> {
                     })))),
       ),
       const SizedBox(height: 15),
-      widget.product.products == null
+      product?.products == null
           ? Center(
               child: SizedBox(
-                  height: 100,
-                  child: Flexible(
-                      child:
-                          Lottie.asset('assets/task.json', fit: BoxFit.fill))),
+                width: 200,
+                height: 600,
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    const SizedBox(height: 100),
+                    Flexible(
+                        child: Lottie.asset('assets/task.json',
+                            height: 100, fit: BoxFit.fill)),
+                  ],
+                ),
+              ),
             )
           : Expanded(
               child: ListView.builder(
-                  itemCount: widget.product.products?.length,
+                  itemCount: product?.products?.length,
                   itemBuilder: ((context, index) {
                     return Column(
                       children: [
                         TileWidget02(
-                          product: widget.product,
+                          product: product,
                           index: index,
                           setTheState: setTheState,
                         ),

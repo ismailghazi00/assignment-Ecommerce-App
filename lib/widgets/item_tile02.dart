@@ -1,5 +1,7 @@
+import 'package:assignment_ecommerce_app_ismail/screens/page_view.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
+import 'package:lottie/lottie.dart';
 
 import '../modules/product_class.dart';
 import '../screens/product_card_scree.dart';
@@ -7,7 +9,7 @@ import '../screens/product_card_scree.dart';
 class TileWidget02 extends StatefulWidget {
   final Function setTheState;
   final int index;
-  Product product;
+  Product? product;
 
   TileWidget02(
       {super.key,
@@ -61,12 +63,22 @@ class _TileWidget02State extends State<TileWidget02> {
                         width: 104,
                         decoration: BoxDecoration(
                           borderRadius: BorderRadius.circular(10),
-                          color: Colors.amberAccent,
+                          color: Colors.white,
                         ),
-                        child: Image.network(
-                            '${widget.product?.products?[widget.index].image}',
-                            fit: BoxFit.cover,
-                            alignment: Alignment.topCenter),
+                        child: widget.product?.products?[widget.index].image ==
+                                null
+                            ? Container(
+                                height: 104,
+                                width: 104,
+                                child: Lottie.asset(
+                                  'assets/shimmer.json',
+                                  fit: BoxFit.fill,
+                                ),
+                              )
+                            : Image.network(
+                                '${widget.product?.products?[widget.index].image}',
+                                fit: BoxFit.cover,
+                                alignment: Alignment.topCenter),
                       ),
                       const SizedBox(width: 10),
                       Column(
@@ -80,13 +92,17 @@ class _TileWidget02State extends State<TileWidget02> {
                               child: SingleChildScrollView(
                                 scrollDirection: Axis.horizontal,
                                 child: Text(
-                                    '${widget.product?.products?[widget.index].name}',
+                                    widget.product?.products?[widget.index]
+                                            .name ??
+                                        'Loading',
                                     style:
                                         Theme.of(context).textTheme.bodyLarge),
                               ),
                             ),
                             Text(
-                                '${widget.product?.products?[widget.index].category?.name}',
+                                widget.product?.products?[widget.index].category
+                                        ?.name ??
+                                    'Loading',
                                 style: Theme.of(context).textTheme.titleSmall),
                             const SizedBox(height: 5),
 
@@ -94,6 +110,7 @@ class _TileWidget02State extends State<TileWidget02> {
                             Row(
                               children: [
                                 RatingBar(
+                                  ignoreGestures: true,
                                   onRatingUpdate: (intt) {},
                                   maxRating: 5,
                                   minRating: 1,
@@ -125,7 +142,8 @@ class _TileWidget02State extends State<TileWidget02> {
                             ),
                             const SizedBox(height: 5),
                             Text(
-                                '${widget.product?.products?[widget.index].price}Rs',
+                                widget.product?.products?[widget.index].price ??
+                                    'Loading',
                                 style: Theme.of(context).textTheme.titleSmall),
                             // widget.newPrice != null
                             //     ? Row(
@@ -169,6 +187,16 @@ class _TileWidget02State extends State<TileWidget02> {
                     onPressed: () {
                       isFavorite = !isFavorite;
                       widget.setTheState();
+                      setState(() {
+                        favModule.addToFavorite(
+                            widget.product!.products![widget.index].id,
+                            widget.product!.products![widget.index].name,
+                            widget.product!.products![widget.index].image,
+                            widget.product!.products![widget.index].price,
+                            widget.product?.products?[widget.index].rating,
+                            widget.product?.products?[widget.index].reviews
+                                .toString());
+                      });
                     },
                     child: isFavorite == true ? checkIcon : unCheckIcon),
               ),

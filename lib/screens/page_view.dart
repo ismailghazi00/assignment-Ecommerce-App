@@ -1,15 +1,11 @@
-import 'package:assignment_ecommerce_app_ismail/screens/testscreen.dart';
+import 'package:assignment_ecommerce_app_ismail/screens/profile_screen.dart';
+import 'package:assignment_ecommerce_app_ismail/screens/shopScreens/categories_list_screen01.dart';
 import 'package:flutter/material.dart';
-import '../modules/api_controller.dart';
+import '../modules/favorites_module.dart';
 import '../modules/login_signup_module.dart';
-import '../modules/product_class.dart';
-import '../modules/review_class.dart';
-import 'categories_list_screen01.dart';
-import 'package:http/http.dart' as http;
-import 'dart:convert';
+import 'bag_screens/bag_screen.dart';
+import 'favorite_screen.dart';
 import 'home/home_main.dart';
-import 'home/home_main_2.dart';
-import 'initial_screens/log_in_screen.dart';
 
 class PageViewScreen extends StatefulWidget {
   const PageViewScreen({super.key});
@@ -17,36 +13,16 @@ class PageViewScreen extends StatefulWidget {
   State<PageViewScreen> createState() => _PageViewScreenState();
 }
 
-Product newProduct = Product();
-Product saleProduct = Product();
-Product allProducts = Product();
-Review review = Review();
-Product productdynimic = Product();
-
 LogInModules logInModules = LogInModules();
-APIController apiController = APIController();
-// LogInModules logInModules = LogInModules();
-
-Categories categoryList = Categories();
+FavModule favModule = FavModule();
 int selactedPageIndex = 0;
 PageController pageViewController = PageController();
 List<Widget> listofScreens = [
-  HomeMian01(newProduct: newProduct),
-  CategoriesList(
-    categoryList: categoryList,
-    // productdynimic: productdynimic,
-  ),
-  const Text('fsdv'),
-  const Text('fsdv'),
-
-  // const ProductCardScreen(),
-  TestScreen(logInModules: logInModules),
-];
-List<Widget> allScreensList = [
-  HomeMain02(newProduct: newProduct, saleProduct: saleProduct),
-  LogInScreen(
-      // logInModules: logInModules
-      ),
+  const HomeMian01(),
+  const CategoriesList(),
+  const BagScreen(),
+  const FavoriteScreen(),
+  const ProfilScreen()
 ];
 
 class _PageViewScreenState extends State<PageViewScreen> {

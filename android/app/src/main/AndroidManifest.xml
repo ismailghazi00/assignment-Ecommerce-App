@@ -3,11 +3,12 @@
     <uses-permission android:name="android.permission.CAMERA" /> <!--This is how we get permission of camera & Gallery from user -->
     <uses-permission android:name="android.permission.GALLERY" /> <!--This is how we get permission of camera from user -->
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
-<uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+ <uses-permission android:name="android.permission.INTERNET"/>
    <application
-        android:label="assignment_ecommerce_app_ismail"
+        android:label="Shop Online"
         android:name="${applicationName}"
-        android:icon="@mipmap/ic_launcher">
+        android:icon="@mipmap/launcher_icon">
         <activity
             android:name=".MainActivity"
             android:exported="true"

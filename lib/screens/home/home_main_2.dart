@@ -1,12 +1,15 @@
+import 'dart:convert';
+
 import 'package:assignment_ecommerce_app_ismail/screens/page_view.dart';
 import 'package:flutter/material.dart';
 import '../../modules/product_class.dart';
 import '../../widgets/item_tile01.dart';
+import 'package:http/http.dart' as http;
+
+import '../shopScreens/categories_list_screen01.dart';
 
 class HomeMain02 extends StatefulWidget {
-  final Product? newProduct;
-  final Product? saleProduct;
-  const HomeMain02({super.key, this.newProduct, this.saleProduct});
+  const HomeMain02({super.key});
   @override
   State<HomeMain02> createState() => _HomeMain02State();
 }
@@ -18,9 +21,35 @@ class _HomeMain02State extends State<HomeMain02> {
     setState(() {});
   }
 
+  Product? newProduct;
+  Product? saleProduct;
+  @override
+  void initState() {
+    getProductNew();
+    getProductSale();
+    super.initState();
+  }
+
+  Future<void> getProductNew() async {
+    http.Response newResponse = await http.get(Uri.parse(
+        'https://ecommerce.salmanbediya.com/products/tag/new/getAll'));
+    setState(() {
+      newProduct = Product.fromJson(jsonDecode(newResponse.body));
+    });
+  }
+
+  Future<void> getProductSale() async {
+    http.Response newResponse = await http.get(Uri.parse(
+        'https://ecommerce.salmanbediya.com/products/tag/sale/getAll'));
+    setState(() {
+      saleProduct = Product.fromJson(jsonDecode(newResponse.body));
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
-    return SingleChildScrollView(
+    return Scaffold(
+        body: SingleChildScrollView(
       scrollDirection: Axis.vertical,
       child: Column(
         children: [
@@ -51,12 +80,11 @@ class _HomeMain02State extends State<HomeMain02> {
                     const SizedBox(height: 10),
                     ElevatedButton(
                         onPressed: () {
-                          // Navigator.push(
-                          //     context,
-                          //     MaterialPageRoute(
-                          //         builder: (context) => const MainViewScreen()
-                          //         // VisualFindingScreen(),
-                          //         ));
+                          Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) =>
+                                      const CategoriesList()));
                         },
                         style: ElevatedButton.styleFrom(
                             fixedSize: const Size(160, 36),
@@ -64,7 +92,7 @@ class _HomeMain02State extends State<HomeMain02> {
                             elevation: 8, //Shadow radius
                             shape: RoundedRectangleBorder(
                                 borderRadius: BorderRadius.circular(50))),
-                        child: Text('Check',
+                        child: Text('Check Categories',
                             style: Theme.of(context).textTheme.bodyMedium)),
                   ]),
             ),
@@ -91,7 +119,12 @@ class _HomeMain02State extends State<HomeMain02> {
                         ]),
                     const Spacer(),
                     TextButton(
-                      onPressed: () {},
+                      onPressed: () {
+                        Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => const CategoriesList()));
+                      },
                       child: Text('View all',
                           style: Theme.of(context).textTheme.titleSmall),
                     )
@@ -108,7 +141,7 @@ class _HomeMain02State extends State<HomeMain02> {
 
                           // showItemsTile();
                         }),
-                        itemCount: widget.saleProduct?.products?.length ?? 5,
+                        itemCount: saleProduct?.products?.length,
                         scrollDirection: Axis.horizontal,
                         physics: const AlwaysScrollableScrollPhysics()),
                   )
@@ -116,7 +149,7 @@ class _HomeMain02State extends State<HomeMain02> {
               )),
           const SizedBox(height: 20),
           SizedBox(
-              height: 337,
+              height: 331,
               width: double.infinity,
               child: Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 10),
@@ -130,18 +163,22 @@ class _HomeMain02State extends State<HomeMain02> {
                             'New',
                             style: Theme.of(context).textTheme.headlineLarge,
                           ),
-                          const SizedBox(height: 2),
                           Text('You’ve never seen it before!',
                               style: Theme.of(context).textTheme.titleSmall),
                         ]),
                     const Spacer(),
                     TextButton(
-                      onPressed: () {},
+                      onPressed: () {
+                        Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => const CategoriesList()));
+                      },
                       child: Text('View all',
                           style: Theme.of(context).textTheme.titleSmall),
                     )
                   ]),
-                  const SizedBox(height: 5),
+                  const SizedBox(height: 3),
                   Expanded(
                     child: ListView.builder(
                         itemBuilder: ((context, index) {
@@ -151,7 +188,7 @@ class _HomeMain02State extends State<HomeMain02> {
                             setTheState: setTheState,
                           );
                         }),
-                        itemCount: newProduct.products?.length ?? 5,
+                        itemCount: newProduct?.products?.length,
                         scrollDirection: Axis.horizontal,
                         physics: const AlwaysScrollableScrollPhysics()),
                   )
@@ -159,6 +196,6 @@ class _HomeMain02State extends State<HomeMain02> {
               )),
         ],
       ),
-    );
+    ));
   }
 }

@@ -1,15 +1,17 @@
+import 'dart:convert';
+
 import 'package:assignment_ecommerce_app_ismail/modules/review_class.dart';
 import 'package:flutter/material.dart';
-
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
-
-import '../modules/product_class.dart';
 import '../widgets/add_reviews_bottomSheet.dart';
+import 'package:http/http.dart' as http;
 
 class ReviewsScreen extends StatefulWidget {
-  Review review;
+  String? reviewsID;
+
   final Function setTheState;
-  ReviewsScreen({super.key, required this.review, required this.setTheState});
+  ReviewsScreen(
+      {super.key, required this.reviewsID, required this.setTheState});
 
   @override
   State<ReviewsScreen> createState() => _ReviewsScreenState();
@@ -21,20 +23,31 @@ Icon helpFullIcon = const Icon(
   color: Color(0xffABB4BD),
   size: 15,
 );
-Icon unHelpFullIcon = const Icon(
-  Icons.thumb_up_alt_outlined,
-  color: Color(0xffABB4BD),
-  size: 15,
-);
+Icon unHelpFullIcon =
+    const Icon(Icons.thumb_up_alt_outlined, color: Color(0xffABB4BD), size: 15);
 
 class _ReviewsScreenState extends State<ReviewsScreen> {
+  Review? review;
+  @override
+  void initState() {
+    getReviews();
+    super.initState();
+  }
+
+  Future<void> getReviews() async {
+    http.Response newResponse = await http.get(Uri.parse(
+        'https://ecommerce.salmanbediya.com/products/review/get/${widget.reviewsID}'));
+    setState(() {
+      review = Review.fromJson(jsonDecode(newResponse.body));
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
         floatingActionButton: flotingElevatedButton(),
-        body: SafeArea(
-            child: SingleChildScrollView(
-                child: Padding(
+        body: SingleChildScrollView(
+            child: Padding(
           padding: const EdgeInsets.symmetric(horizontal: 10),
           child:
               Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
@@ -52,13 +65,13 @@ class _ReviewsScreenState extends State<ReviewsScreen> {
                 style: Theme.of(context).textTheme.headlineLarge),
             const SizedBox(height: 20),
             Column(children: [
-              Text('${widget.review.reviews?[0].rating}',
+              Text('${review?.reviews?[0].rating}',
                   style: Theme.of(context).textTheme.headlineLarge),
-              Text('${widget.review.reviews?.length.toString()} ratings',
+              Text('${review?.reviews?.length.toString()} ratings',
                   style: Theme.of(context).textTheme.titleSmall)
             ]),
             const SizedBox(height: 50),
-            Text('${widget.review.reviews?.length.toString()} reviews',
+            Text('${review?.reviews?.length.toString()} reviews',
                 style: Theme.of(context).textTheme.headlineSmall),
             const SizedBox(height: 15),
             SizedBox(
@@ -67,18 +80,17 @@ class _ReviewsScreenState extends State<ReviewsScreen> {
                 child: ListView.builder(
                   itemBuilder: (context, index) {
                     return reviewTile(
-                        reviewDate:
-                            widget.review.reviews?[index].user?.dateCreated,
-                        review: widget.review.reviews?[index].review,
-                        rating: widget.review.reviews?[index].rating,
-                        reviewerName: widget.review.reviews?[index].user?.name);
+                        reviewDate: review?.reviews?[index].user?.dateCreated,
+                        review: review?.reviews?[index].review,
+                        rating: review?.reviews?[index].rating,
+                        reviewerName: review?.reviews?[index].user?.name);
                   },
-                  itemCount: widget.review.reviews?.length,
+                  itemCount: review?.reviews?.length,
                 ),
               ),
             ),
           ]),
-        ))));
+        )));
   }
 
   Padding reviewTile({

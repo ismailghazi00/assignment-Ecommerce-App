@@ -1,7 +1,5 @@
 import 'package:assignment_ecommerce_app_ismail/screens/initial_screens/splash_screen.dart';
-import 'package:assignment_ecommerce_app_ismail/screens/page_view.dart';
 import 'package:flutter/material.dart';
-
 import 'modules/product_class.dart';
 
 void main() {
@@ -24,6 +22,20 @@ class MyApp extends StatelessWidget {
                     top: Radius.circular(20)) //it will make top ages rounded
                 ),
             backgroundColor: Color(0xff1E1F28), //bedfult its white
+          ),
+          //-----------------------------Appbar Theem
+          appBarTheme: const AppBarTheme(
+            actionsIconTheme: IconThemeData(color: Color(0xffF6F6F6), size: 18),
+            color: Color(0xff1E1F28),
+            centerTitle: true,
+            iconTheme: IconThemeData(color: Color(0xffF6F6F6), size: 18),
+            toolbarTextStyle: TextStyle(
+                fontSize: 18,
+                fontFamily: 'Metropolis',
+                color: Color(0xffF6F6F6),
+                fontWeight: FontWeight.w500,
+                height: 1.2),
+            elevation: 0,
           ),
           scaffoldBackgroundColor: const Color(0xff1E1F28),
           textTheme: const TextTheme(
@@ -58,6 +70,10 @@ class MyApp extends StatelessWidget {
                 color: Color(0xffF6F6F6)),
             titleMedium: TextStyle(
                 fontSize: 14,
+                fontFamily: 'Metropolis',
+                color: Color(0xffABB4BD)),
+            titleLarge: TextStyle(
+                fontSize: 16,
                 fontFamily: 'Metropolis',
                 color: Color(0xffABB4BD)),
             titleSmall: TextStyle(
